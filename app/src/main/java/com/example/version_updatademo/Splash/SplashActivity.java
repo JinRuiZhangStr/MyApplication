@@ -43,12 +43,7 @@ public class SplashActivity extends AppCompatActivity {
         useTimer(5000);
         initView();
         initData();
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                initWebView();
-            }
-        });
+        //initWebView();
     }
 
     private void initWebView() {
@@ -127,7 +122,7 @@ public class SplashActivity extends AppCompatActivity {
     }
 
     private void initView() {
-        web = (LottieAnimationView) findViewById(R.id.web);
+        web = (LottieAnimationView) findViewById(R.id.animation_view);
         btn = (Button) findViewById(R.id.btn);
         img = (ImageView) findViewById(R.id.img);
         tv = (TextView) findViewById(R.id.tv);
