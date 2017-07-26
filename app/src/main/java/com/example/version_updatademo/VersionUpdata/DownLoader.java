@@ -3,6 +3,7 @@ package com.example.version_updatademo.VersionUpdata;
 import android.app.Activity;
 import android.os.Environment;
 
+import com.example.version_updatademo.utils.OkhttpUtils;
 import com.squareup.okhttp.Call;
 import com.squareup.okhttp.Callback;
 import com.squareup.okhttp.Request;
@@ -23,7 +24,7 @@ public class DownLoader {
                 .get()
                 .url(url)
                 .build();
-        Call call=OkhttpUtils.getInstance().newCall(builder);
+        Call call= OkhttpUtils.getInstance().newCall(builder);
         call.enqueue(new DownLoaderCallBack(activity));
     }
     private static class DownLoaderCallBack implements Callback {

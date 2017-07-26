@@ -7,4 +7,6 @@ package com.example.version_updatademo.Guide;
 public class HttpConstants {
     private static final String hosts="https://JinRuiZhangStr.github.io/";
     public static final String guide=hosts+"guide.json";
+    public static final String splash=hosts+"splash.json";
+    public static final String data=hosts+"data.json";
 }

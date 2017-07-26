@@ -7,6 +7,8 @@ import android.text.TextUtils;
 import android.util.Log;
 
 import com.example.version_updatademo.R;
+import com.example.version_updatademo.utils.DialogUtils;
+import com.example.version_updatademo.utils.PackageUtils;
 import com.google.gson.Gson;
 import com.squareup.okhttp.Call;
 import com.squareup.okhttp.Callback;

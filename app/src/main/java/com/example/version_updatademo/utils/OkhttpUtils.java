@@ -1,4 +1,4 @@
-package com.example.version_updatademo.VersionUpdata;
+package com.example.version_updatademo.utils;
 
 
 import com.squareup.okhttp.OkHttpClient;

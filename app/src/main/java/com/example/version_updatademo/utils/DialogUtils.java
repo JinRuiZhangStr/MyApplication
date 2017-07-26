@@ -1,8 +1,10 @@
-package com.example.version_updatademo.VersionUpdata;
+package com.example.version_updatademo.utils;
 
 import android.app.Activity;
 import android.content.DialogInterface;
 import android.support.v7.app.AlertDialog;
+
+import com.example.version_updatademo.VersionUpdata.DownLoader;
 
 /**
  * Created by 张金瑞 on 2017/7/21.

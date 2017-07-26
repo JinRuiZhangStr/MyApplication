@@ -1,6 +1,8 @@
 package com.example.version_updatademo.Guide;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -8,6 +10,11 @@ import android.os.Message;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
+import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.view.animation.OvershootInterpolator;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
@@ -16,7 +23,8 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.example.version_updatademo.Guide.progress.ProgressImageView;
 import com.example.version_updatademo.Guide.progress.ProgressModelLoader;
 import com.example.version_updatademo.R;
-import com.example.version_updatademo.VersionUpdata.OkhttpUtils;
+import com.example.version_updatademo.Splash.SplashActivity;
+import com.example.version_updatademo.utils.OkhttpUtils;
 import com.google.gson.Gson;
 import com.squareup.okhttp.Call;
 import com.squareup.okhttp.Callback;
@@ -37,6 +45,7 @@ public class GuideActivity extends AppCompatActivity {
     private List<String> guidepic;
     private List<ProgressImageView> list=new ArrayList<>();
     private ImageView[] imgs;
+    private Button btn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -105,6 +114,16 @@ public class GuideActivity extends AppCompatActivity {
     private void initView() {
         vp = (ViewPager) findViewById(R.id.vp);
         ll = (LinearLayout) findViewById(R.id.ll);
+        btn = (Button) findViewById(R.id.btn);
+        btn.setOnClickListener(new View.OnClickListener() {
+            @SuppressLint("NewApi")
+            @Override
+            public void onClick(View v) {
+                btn.setBackground(getResources().getDrawable(R.drawable.button_to));
+                startActivity(new Intent(GuideActivity.this, SplashActivity.class));
+
+            }
+        });
     }
     private static class ProgressHandler extends Handler{
         private final WeakReference<Activity> mActivity;
@@ -159,6 +178,7 @@ public class GuideActivity extends AppCompatActivity {
 
             }
 
+            @SuppressLint("NewApi")
             @Override
             public void onPageSelected(int position) {
                 for (int i = 0; i < imgs.length; i++) {
@@ -167,6 +187,15 @@ public class GuideActivity extends AppCompatActivity {
                         imgs[i].setImageResource(R.drawable.yd);
                     } else {
                         imgs[i].setImageResource(R.drawable.normal);
+                    }
+                    if (position==list.size()-1){
+                        btn.setVisibility(View.VISIBLE);
+                        Animation animation= AnimationUtils.loadAnimation(GuideActivity.this,R.anim.from_button);
+                        animation.setInterpolator(new OvershootInterpolator());
+                        btn.setAnimation(animation);
+                    }else {
+                        btn.setVisibility(View.GONE);
+                        btn.setBackground(getResources().getDrawable(R.drawable.button));
                     }
                 }
             }
