@@ -19,12 +19,12 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.example.version_updatademo.Guide.progress.ProgressImageView;
-import com.example.version_updatademo.Guide.progress.ProgressModelLoader;
 import com.example.version_updatademo.R;
 import com.example.version_updatademo.Splash.SplashActivity;
+import com.example.version_updatademo.utils.HttpConstants;
 import com.example.version_updatademo.utils.OkhttpUtils;
+import com.example.version_updatademo.utils.SharedUtils;
 import com.google.gson.Gson;
 import com.squareup.okhttp.Call;
 import com.squareup.okhttp.Callback;
@@ -33,7 +33,6 @@ import com.squareup.okhttp.Request;
 import com.squareup.okhttp.Response;
 
 import java.io.IOException;
-import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -46,13 +45,17 @@ public class GuideActivity extends AppCompatActivity {
     private List<ProgressImageView> list=new ArrayList<>();
     private ImageView[] imgs;
     private Button btn;
+    private SharedUtils sharedUtils;
+    private boolean updata;
+    private int updata_status;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_guide);
         initView();
-        initData();
+
     }
 
     private void initData() {
@@ -77,6 +80,7 @@ public class GuideActivity extends AppCompatActivity {
                     GuideInfo guideInfo = gson.fromJson(json, GuideInfo.class);
                     if (guideInfo!=null){
                         if (200==guideInfo.getStatus()){
+                            updata = guideInfo.isUpdata();
                             guidepic = guideInfo.getData().getGuidepic();
                             runOnUiThread(new Runnable() {
                                 @Override
@@ -99,9 +103,9 @@ public class GuideActivity extends AppCompatActivity {
             ImageView imageView=pgImg.getImageView();
             imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
             Glide.with(this)
-                    .using(new ProgressModelLoader(new ProgressHandler(GuideActivity.this,pgImg)))
+//                     .using(new ProgressModelLoader(new ProgressHandler(GuideActivity.this,pgImg)))
                     .load(str)
-                    .diskCacheStrategy(DiskCacheStrategy.NONE)
+//                    .diskCacheStrategy(DiskCacheStrategy.NONE)
                     .placeholder(R.drawable.loading).into(imageView);
             list.add(pgImg);
 
@@ -111,27 +115,39 @@ public class GuideActivity extends AppCompatActivity {
         initbottom();
     }
 
-    private void initView() {
+    private void initView()
+    {
         vp = (ViewPager) findViewById(R.id.vp);
         ll = (LinearLayout) findViewById(R.id.ll);
         btn = (Button) findViewById(R.id.btn);
+        sharedUtils = new SharedUtils();
+        updata_status = sharedUtils.getShared_int("updata_status", this);
+        if (updata_status==1){
+            startActivity(new Intent(this,SplashActivity.class));
+            finish();
+        }else {
+            initData();
+        }
+
+
         btn.setOnClickListener(new View.OnClickListener() {
             @SuppressLint("NewApi")
             @Override
             public void onClick(View v) {
+                sharedUtils.saveShared_int("updata_status",1,GuideActivity.this);
                 btn.setBackground(getResources().getDrawable(R.drawable.button_to));
                 startActivity(new Intent(GuideActivity.this, SplashActivity.class));
-
+                finish();
             }
         });
     }
     private static class ProgressHandler extends Handler{
-        private final WeakReference<Activity> mActivity;
+        private final Activity mActivity;
         private final ProgressImageView mProgressImageView;
 
         public ProgressHandler(Activity activity, ProgressImageView progressImageView){
             super(Looper.getMainLooper());
-            mActivity = new WeakReference<>(activity);
+            mActivity =activity ;
             mProgressImageView = progressImageView;
         }
 
@@ -140,8 +156,7 @@ public class GuideActivity extends AppCompatActivity {
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
-            Activity activity=mActivity.get();
-            if (activity!=null){
+            if (mActivity!=null){
                 switch (msg.what){
                     case 1:
                         int percent = msg.arg1 * 100 / msg.arg2;

@@ -3,6 +3,7 @@ package com.example.version_updatademo.Splash;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -10,7 +11,7 @@ import android.widget.TextView;
 import com.airbnb.lottie.LottieAnimationView;
 import com.airbnb.lottie.model.LottieComposition;
 import com.bumptech.glide.Glide;
-import com.example.version_updatademo.Guide.HttpConstants;
+import com.example.version_updatademo.utils.HttpConstants;
 import com.example.version_updatademo.R;
 import com.example.version_updatademo.VersionUpdata.MainActivity;
 import com.example.version_updatademo.utils.OkhttpUtils;
@@ -35,22 +36,23 @@ public class SplashActivity extends AppCompatActivity {
     private ImageView img;
     private TextView tv;
     private SplashIfo splashIfo;
+    private Timer timer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
-        useTimer(5000);
+        useTimer(4500);
         initView();
         initData();
-        //initWebView();
+        initWebView();
     }
 
     private void initWebView() {
         OkHttpClient instance = OkhttpUtils.getInstance();
         final Request request = new Request.Builder()
                 .get()
-                .url(HttpConstants.splash)
+                .url(HttpConstants.data)
                 .build();
         Call call = instance.newCall(request);
         call.enqueue(new Callback() {
@@ -126,13 +128,21 @@ public class SplashActivity extends AppCompatActivity {
         btn = (Button) findViewById(R.id.btn);
         img = (ImageView) findViewById(R.id.img);
         tv = (TextView) findViewById(R.id.tv);
+        btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                timer.purge();
+                timer.cancel();
+                startActivity(new Intent(SplashActivity.this,MainActivity.class));
+            }
+        });
     }
 
     private void useTimer(final long time) {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                final Timer timer = new Timer();
+                timer = new Timer();
                 timer.schedule(new TimerTask() {
                     @Override
                     public void run() {
@@ -154,5 +164,11 @@ public class SplashActivity extends AppCompatActivity {
         web.loop(true);
         web.setComposition(animationView);
         web.playAnimation();
+    }
+
+    @Override
+    protected void onStop() {
+        this.finish();
+        super.onStop();
     }
 }

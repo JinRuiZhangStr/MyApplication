@@ -28,9 +28,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="9"
-            app:lottie_fileName="data.json"
-            app:lottie_loop="true"
-            app:lottie_autoPlay="true"/>
+            />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -47,7 +45,7 @@
                 android:layout_height="70dp"
                 android:src="@mipmap/ic_launcher" />
 
-            <TextView
+            <com.example.version_updatademo.widget.ItalicsTextView
                 android:id="@+id/tv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

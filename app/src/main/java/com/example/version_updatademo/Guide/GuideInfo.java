@@ -9,10 +9,12 @@ import java.util.List;
 public class GuideInfo {
     /**
      * status : 200
-     * data : {"guidepic":["http://upload.cankaoxiaoxi.com/2017/0724/1500856367784.jpg","http://upload.cankaoxiaoxi.com/2017/0724/1500856334352.jpg","http://upload.cankaoxiaoxi.com/2017/0724/1500856038428.jpg"]}
+     * updata : false
+     * data : {"guidepic":["http://00.minipic.eastday.com/20170713/20170713135604_d1014d6f253149cdf5f16a2a9992c6fc_4.jpeg","http://static.jstv.com/gather/hl/20170713/32/16980251754786271652.jpg","http://n.sinaimg.cn/ent/4_img/upload/fc8e0ed6/20170620/vvO0-fyhfxph4298189.jpg?imageslim%7CimageView2/2/w/700/interlace/1"]}
      */
 
     private int status;
+    private boolean updata;
     private DataBean data;
 
     public int getStatus() {
@@ -21,6 +23,14 @@ public class GuideInfo {
 
     public void setStatus(int status) {
         this.status = status;
+    }
+
+    public boolean isUpdata() {
+        return updata;
+    }
+
+    public void setUpdata(boolean updata) {
+        this.updata = updata;
     }
 
     public DataBean getData() {

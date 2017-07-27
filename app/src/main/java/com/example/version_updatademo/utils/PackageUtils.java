@@ -13,9 +13,9 @@ public class PackageUtils {
     public static String getCurrentVersion(Activity activity)throws PackageManager.NameNotFoundException{
         PackageManager pm=activity.getPackageManager();
 
-            PackageInfo info=pm.getPackageInfo("com.example.version_updatademo",0);
+            PackageInfo info=pm.getPackageInfo(activity.getPackageName(),0);
             String versionName=info.versionName;
-            if (!TextUtils.isEmpty(versionName)){
+            if (TextUtils.isEmpty(versionName)){
                 return "";
             }
             return versionName;

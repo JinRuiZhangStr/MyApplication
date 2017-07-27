@@ -2,55 +2,145 @@ package com.example.version_updatademo.utils;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.PixelFormat;
+import android.graphics.drawable.Drawable;
+import android.util.Base64;
+
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 
 /**
- * Created by 张金瑞 on 2017/7/25.
+ * 本类为sharedpreferences保存类    xml本地保存类
+ * sharedpreferences：android 五大存储方式之一，存储数据类型为： K  V  文件已xml形式保存
+ * 项目应用：1.导航页是否第一次进入
+ * 2.用户信息，登陆信息
+ * 好处：只要不卸载软件，或者不手动清除，基本上不会被清除
  */
-
 public class SharedUtils {
-    private static SharedPreferences sp;
-    private static SharedUtils sharedUtils;
+    private String name = "login";
+    private String person_msg = "info";
+    private String photo = "bitmap";
 
-    private SharedUtils(Context context,String str){
-        sp=context.getSharedPreferences(str,Context.MODE_PRIVATE);
-    }
-    public static SharedUtils getInstance(Context context,String str){
-        if (sharedUtils!=null){
-            sharedUtils=new SharedUtils(context,str);
-        }
-        return sharedUtils;
-    }
-
-    public static void saveSP(String key,Object value){
-        SharedPreferences.Editor editor=sp.edit();
-
-        if (value instanceof String){
-            editor.putString(key, (String) value);
-        }else if(value instanceof Integer){
-            editor.putInt(key, (Integer) value);
-        }else if (value instanceof Float){
-            editor.putFloat(key, (Float) value);
-        }else if (value instanceof Boolean){
-            editor.putBoolean(key, (Boolean) value);
-        }else if (value instanceof Long){
-            editor.putLong(key, (Long) value);
-        }
-        editor.commit();
+    /*
+     * 保存数据的方法
+     * */
+    public void saveShared(String key, String value, Context ctx) {
+        SharedPreferences shared = ctx.getSharedPreferences(name, 0);
+        Editor edit = shared.edit();
+        edit.putString(key, value);
+        edit.commit();
     }
 
-    public static  Object getSP(String key,Object def){
-
-        if (def instanceof Integer){
-            return sp.getInt(key, (Integer) def);
-        }else if (def instanceof String){
-            return sp.getString(key, (String) def);
-        }else if (def instanceof Float){
-            return sp.getFloat(key, (Float) def);
-        }else if (def instanceof Boolean){
-            return sp.getBoolean(key, (Boolean) def);
-        }else if (def instanceof Long){
-            return sp.getLong(key, (Long) def);
-        }
-        return null;
+    /*
+     * 从本地获取数据
+     * */
+    public String getShared(String key, Context ctx) {
+        String str = null;
+        SharedPreferences shared = ctx.getSharedPreferences(name, 0);
+        str = shared.getString(key, "");
+        return str;
     }
+
+    public void saveShared_info(String key, String value, Context ctx) {
+        SharedPreferences shared = ctx.getSharedPreferences(person_msg, 0);
+        Editor edit = shared.edit();
+        edit.putString(key, value);
+        edit.commit();
+    }
+
+
+
+    /*
+     * 从本地获取数据
+     * */
+    public String getShared_info(String key, Context ctx) {
+        String str = null;
+        SharedPreferences shared = ctx.getSharedPreferences(person_msg, 0);
+        str = shared.getString(key, "");
+        return str;
+    }
+
+    /**
+     * 保存 boolean类型数据的方法
+     * @param key
+     * @param value
+     * @param ctx
+     */
+    public void saveShared_boolean(String key,boolean value,Context ctx){
+        SharedPreferences shared = ctx.getSharedPreferences(name, 0);
+        Editor edit = shared.edit();
+        edit.putBoolean(key, value);
+        edit.commit();
+    }
+    /*
+    获取boolean类型数据类型的方法
+     */
+    public boolean getShared_boolean(String key,Context ctx){
+        boolean flag=false;
+        SharedPreferences shared = ctx.getSharedPreferences(name, 0);
+        flag=shared.getBoolean(key,false);
+        return flag;
+    }
+
+    /*
+     * 保存int类型数据的方法
+     * */
+    public void saveShared_int(String key, int value, Context ctx) {
+        SharedPreferences shared = ctx.getSharedPreferences(name, 0);
+        Editor edit = shared.edit();
+        edit.putInt(key, value);
+        edit.commit();
+    }
+
+    /*
+     * 从本地获取int类型数据   17600123046
+     * */
+    public int getShared_int(String key, Context ctx) {
+        int str = 0;
+        SharedPreferences shared = ctx.getSharedPreferences(name, 0);
+        str = shared.getInt(key, 0);
+        return str;
+    }
+
+    /*
+    * 保存bitmap图片
+    * */
+    public void saveDrawable(String key, Bitmap bitmap, Context ctx) {
+        SharedPreferences shared = ctx.getSharedPreferences(photo, 0);
+        Editor edit = shared.edit();
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.PNG, 50, baos);
+        String imageBase64 = new String(Base64.encodeToString(baos.toByteArray(), Base64.DEFAULT));
+        edit.putString(key, imageBase64);
+        edit.commit();
+    }
+
+    /*
+    * 获取bitmap图片
+    * */
+    public Drawable getDrawable(String key, Context ctx) {
+        SharedPreferences shared = ctx.getSharedPreferences(photo, 0);
+        String temp = shared.getString(key, "");
+        ByteArrayInputStream bais = new ByteArrayInputStream(Base64.decode(temp.getBytes(), Base64.DEFAULT));
+        Drawable drawable = Drawable.createFromStream(bais, "");
+        return drawable;
+    }
+
+    /*
+    * drawable转换成bitmap
+    * */
+    public static Bitmap drawableToBitamp(Drawable drawable) {
+        Bitmap bitmap = Bitmap.createBitmap(drawable.getIntrinsicWidth(),
+                drawable.getIntrinsicHeight(),
+                drawable.getOpacity() != PixelFormat.OPAQUE ? Bitmap.Config.ARGB_8888
+                        : Bitmap.Config.RGB_565);
+        Canvas canvas = new Canvas(bitmap);
+        drawable.setBounds(0, 0, drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight());
+        drawable.draw(canvas);
+        return bitmap;
+    }
+
 }

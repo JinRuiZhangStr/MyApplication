@@ -2,6 +2,7 @@ package com.example.version_updatademo.Guide.progress;
 
 import android.os.Handler;
 import android.os.Message;
+import android.util.Log;
 
 import com.bumptech.glide.Priority;
 import com.bumptech.glide.load.data.DataFetcher;
@@ -19,6 +20,7 @@ import java.io.InputStream;
  * Created by chenpengfei on 2016/11/9.
  */
 public class ProgressDataFetcher implements DataFetcher<InputStream> {
+    private static final String TAG = "ProgressDataFetcher";
 
     private String url;
     private Handler handler;
@@ -39,6 +41,8 @@ public class ProgressDataFetcher implements DataFetcher<InputStream> {
         try {
             progressCall = client.newCall(request);
             Response response = progressCall.execute();
+            byte[] bytes = response.body().bytes();
+            Log.e(TAG, "loadData: "+bytes.length );
             if (isCancelled) {
                 return null;
             }
