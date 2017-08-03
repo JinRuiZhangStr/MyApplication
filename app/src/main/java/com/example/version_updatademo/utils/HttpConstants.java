@@ -10,4 +10,5 @@ public class HttpConstants {
     public static final String splash=hosts+"splash.json";
     public static final String data=hosts+"data.json";
     public static final String versioninfo=hosts+"versioninfo.json";
+    public static final String horizontalscollview=hosts+"horizontalscrollview.json";
 }

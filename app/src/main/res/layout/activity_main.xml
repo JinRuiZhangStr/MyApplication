@@ -12,13 +12,13 @@
         android:layout_height="0dp"
         android:layout_weight="1"/>
 
-    <android.support.v4.app.FragmentTabHost
+    <com.example.version_updatademo.widget.TabFragmentHost
         android:id="@android:id/tabhost"
         android:layout_width="match_parent"
-        android:layout_height="55dp"
+        android:layout_height="wrap_content"
         android:background="@color/white"
         android:layout_gravity="center"
         >
-        </android.support.v4.app.FragmentTabHost>
+        </com.example.version_updatademo.widget.TabFragmentHost>
 
 </LinearLayout>

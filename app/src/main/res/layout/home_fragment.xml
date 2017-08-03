@@ -1,11 +1,52 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
+    xmlns:custom="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
     android:layout_height="match_parent">
-    <TextView
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="home"
-        android:gravity="center"
-        />
+        android:layout_height="200dp">
+        <com.daimajia.slider.library.SliderLayout
+            android:id="@+id/slider"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            />
+        <com.daimajia.slider.library.Indicators.PagerIndicator
+            android:id="@+id/custom_indicator"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="10dp"
+            custom:selected_color="@color/colorPrimary"
+            custom:selected_height="3dp"
+            custom:selected_padding_left="2dp"
+            custom:selected_padding_right="2dp"
+            custom:selected_width="16dp"
+            custom:shape="oval"
+            custom:unselected_color="#55333333"
+            custom:unselected_height="3dp"
+            custom:unselected_padding_left="2dp"
+            custom:unselected_padding_right="2dp"
+            custom:unselected_width="16dp"
+            />
+    </RelativeLayout>
+    <com.example.version_updatademo.widget.MyHorizontalScollView
+        android:id="@+id/myhorizontalScollView"
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        android:layout_gravity="bottom"
+        android:background="@android:color/white"
+        android:scrollbars="none"
+        android:layout_marginTop="5dp">
+        <LinearLayout
+            android:id="@+id/id_gallery"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:orientation="horizontal" >
+            </LinearLayout>
+    </com.example.version_updatademo.widget.MyHorizontalScollView>
+
 </LinearLayout>

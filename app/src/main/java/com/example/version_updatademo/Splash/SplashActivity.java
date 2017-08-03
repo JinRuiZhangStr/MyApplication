@@ -42,7 +42,7 @@ public class SplashActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
-        useTimer(4500);
+        useTimer(5000);
         initView();
         initData();
         initWebView();
